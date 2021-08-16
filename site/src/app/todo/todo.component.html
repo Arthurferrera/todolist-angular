@@ -21,15 +21,15 @@
           name="description"
           type="text"
         ></textarea>
-        <button (click)="addTodo()">Salvar</button>
+        <button (click)="taskAdd()">Salvar</button>
       </div>
       <div class="col-md-6">
         <div class="todo-container">
           <ol class="todo-list">
             <li class="todo-item" *ngFor="let todo of todoList">
-              {{ todo.title }} -- {{ todo.description }}
-              <button>concluir</button> |
-              <button>remover</button>
+              {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
+              <button (click)="taskDone(todo)">concluir</button> |
+              <button (click)="taskRemove(todo)">remover</button>
             </li>
           </ol>
         </div>

@@ -21,16 +21,46 @@ export class TodoComponent implements OnInit {
 
   ngOnInit(): void {
     this.todoForm = { title: '', description: '', done: false };
+    this.loadFromLocalStorage();
   }
 
-  addTodo() {
-    this.todoList.push(
-      new TodoModel(
-        this.todoForm.title,
-        this.todoForm.description,
-        this.todoForm.done
-      )
-    );
-    this.todoForm = { title: '', description: '', done: false };
+  taskAdd() {
+    console.log(this.todoList);
+
+    if (this.todoForm.title && this.todoForm.description) {
+      this.todoList.push(
+        new TodoModel(
+          this.todoForm.title,
+          this.todoForm.description,
+          this.todoForm.done
+        )
+      );
+      this.todoForm = { title: '', description: '', done: false };
+      this.saveOnLocalStorage();
+    }
+  }
+
+  taskRemove(todo: TodoModel) {
+    const index = this.todoList.indexOf(todo);
+    if (index !== -1) {
+      this.todoList.splice(index, 1);
+    }
+    this.saveOnLocalStorage();
+  }
+  taskDone(todo: TodoModel) {
+    const index = this.todoList.indexOf(todo);
+    if (index !== -1) {
+      todo.done = true;
+    }
+    this.saveOnLocalStorage();
+  }
+
+  saveOnLocalStorage() {
+    const data = JSON.stringify(this.todoList);
+    localStorage.setItem('todos', data);
+  }
+  loadFromLocalStorage() {
+    const data = localStorage.getItem('todos');
+    this.todoList = JSON.parse(data) || [];
   }
 }
