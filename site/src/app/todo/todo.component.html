@@ -1,0 +1,39 @@
+<header>Toto List</header>
+
+<main>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Adicionar Tarefas</h1>
+        <label for="title">Title</label>
+        <input
+          [(ngModel)]="todoForm.title"
+          id="title"
+          name="title"
+          type="text"
+        />
+        <label for="description">Description</label>
+        <textarea
+          [(ngModel)]="todoForm.description"
+          cols="8"
+          rows="5"
+          id="description"
+          name="description"
+          type="text"
+        ></textarea>
+        <button (click)="addTodo()">Salvar</button>
+      </div>
+      <div class="col-md-6">
+        <div class="todo-container">
+          <ol class="todo-list">
+            <li class="todo-item" *ngFor="let todo of todoList">
+              {{ todo.title }} -- {{ todo.description }}
+              <button>concluir</button> |
+              <button>remover</button>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
