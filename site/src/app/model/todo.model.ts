@@ -2,6 +2,9 @@ export class TodoModel {
   constructor(
     public title: string,
     public description: string,
-    public done: boolean
+    public responsible_email: string,
+    public responsible_name: string,
+    public done?: boolean,
+    public changed_pending?: number
   ) {}
 }

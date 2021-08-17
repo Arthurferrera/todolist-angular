@@ -8,19 +8,17 @@ import { TodoModel } from '../model/todo.model';
 })
 export class TodoComponent implements OnInit {
   todoList: TodoModel[] = [];
-  // todoList = [
-  //   { title: 'Ir ao mercado', description: 'teste', done: false },
-  //   { title: 'Reunião', description: 'teste', done: false },
-  //   { title: 'Levar o lixo para fora', description: 'teste', done: false },
-  //   { title: 'Fazer o jantar', description: 'teste', done: false },
-  // ];
-
   public todoForm: TodoModel;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.todoForm = { title: '', description: '', done: false };
+    this.todoForm = {
+      title: '',
+      description: '',
+      responsible_email: '',
+      responsible_name: '',
+    };
     this.loadFromLocalStorage();
   }
 
@@ -32,10 +30,16 @@ export class TodoComponent implements OnInit {
         new TodoModel(
           this.todoForm.title,
           this.todoForm.description,
-          this.todoForm.done
+          this.todoForm.responsible_email,
+          this.todoForm.responsible_name
         )
       );
-      this.todoForm = { title: '', description: '', done: false };
+      this.todoForm = {
+        title: '',
+        description: '',
+        responsible_email: '',
+        responsible_name: '',
+      };
       this.saveOnLocalStorage();
     }
   }

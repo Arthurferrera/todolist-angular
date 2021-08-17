@@ -5,22 +5,49 @@
     <div class="row">
       <div class="col-md-6">
         <h1>Adicionar Tarefas</h1>
-        <label for="title">Title</label>
-        <input
-          [(ngModel)]="todoForm.title"
-          id="title"
-          name="title"
-          type="text"
-        />
-        <label for="description">Description</label>
-        <textarea
-          [(ngModel)]="todoForm.description"
-          cols="8"
-          rows="5"
-          id="description"
-          name="description"
-          type="text"
-        ></textarea>
+
+        <div class="row">
+          <div class="col-md-12">
+            <label for="title">Title</label>
+            <input
+              [(ngModel)]="todoForm.title"
+              id="title"
+              name="title"
+              type="text"
+            />
+          </div>
+          <div class="col-md-12">
+            <label for="description">Description</label>
+            <textarea
+              [(ngModel)]="todoForm.description"
+              cols="8"
+              rows="5"
+              id="description"
+              name="description"
+              type="text"
+            ></textarea>
+          </div>
+
+          <div class="col-md-12">
+            <label for="responsible_name">Responsável</label>
+            <input
+              [(ngModel)]="todoForm.responsible_name"
+              id="responsible_name"
+              name="responsible_name"
+              type="text"
+            />
+          </div>
+          <div class="col-md-12">
+            <label for="responsible_email">E-mail do Responsável</label>
+            <input
+              [(ngModel)]="todoForm.responsible_email"
+              id="responsible_email"
+              name="responsible_email"
+              type="email"
+            />
+          </div>
+        </div>
+
         <button (click)="taskAdd()">Salvar</button>
       </div>
       <div class="col-md-6">
