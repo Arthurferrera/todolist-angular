@@ -1,11 +1,11 @@
 const express = require('express');
 
+const taskController = require('./controllers/taskController');
+
+// create routes
 const routes = express.Router();
 
-
 // routes
-routes.get('/', (req, res) => {
-  res.send("Hello route");
-});
+routes.get('/tasks', taskController.index);
 
 module.exports = routes;

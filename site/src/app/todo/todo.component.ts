@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoModel } from '../model/todo.model';
+import { RequisicoesService } from '../services/requisicoes/requisicoes.service';
 
 @Component({
   selector: 'app-todo',
@@ -10,7 +11,7 @@ export class TodoComponent implements OnInit {
   todoList: TodoModel[] = [];
   public todoForm: TodoModel;
 
-  constructor() {}
+  constructor(private http: RequisicoesService) {}
 
   ngOnInit(): void {
     this.todoForm = {
@@ -66,5 +67,16 @@ export class TodoComponent implements OnInit {
   loadFromLocalStorage() {
     const data = localStorage.getItem('todos');
     this.todoList = JSON.parse(data) || [];
+
+    // req
+    this.http
+      .get('tasks', {})
+      .toPromise()
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }
