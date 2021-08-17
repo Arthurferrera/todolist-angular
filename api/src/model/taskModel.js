@@ -12,7 +12,7 @@ const Task = database.define('task', {
     type: Sequelize.STRING,
     allowNull: true
   },
-  descricao: Sequelize.STRING,
+  description: Sequelize.STRING,
   responsible_email: {
     type: Sequelize.STRING,
     allowNull: true

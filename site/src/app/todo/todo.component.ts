@@ -27,14 +27,22 @@ export class TodoComponent implements OnInit {
     console.log(this.todoList);
 
     if (this.todoForm.title && this.todoForm.description) {
-      this.todoList.push(
-        new TodoModel(
-          this.todoForm.title,
-          this.todoForm.description,
-          this.todoForm.responsible_email,
-          this.todoForm.responsible_name
-        )
-      );
+      this.http
+        .post('tasks', this.todoForm)
+        .toPromise()
+        .then((result) => {
+          console.log(result);
+
+          this.todoList.push(
+            new TodoModel(
+              this.todoForm.title,
+              this.todoForm.description,
+              this.todoForm.responsible_email,
+              this.todoForm.responsible_name
+            )
+          );
+        })
+        .catch((error) => {});
       this.todoForm = {
         title: '',
         description: '',

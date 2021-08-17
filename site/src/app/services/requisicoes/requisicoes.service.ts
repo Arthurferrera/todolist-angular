@@ -25,7 +25,8 @@ export class RequisicoesService {
 
     return this._http.post(
       this.ambiente + '/' + metodo_api,
-      JSON.stringify(dados)
+      JSON.stringify(dados),
+      { headers }
     );
   }
 

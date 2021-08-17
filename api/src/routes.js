@@ -7,5 +7,6 @@ const routes = express.Router();
 
 // routes
 routes.get('/tasks', taskController.index);
+routes.post('/tasks', taskController.create);
 
 module.exports = routes;

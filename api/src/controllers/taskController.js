@@ -1,4 +1,5 @@
 const dbConnection = require('../config/db');
+const Task = require('../model/taskModel');
 
 module.exports = {
   async index(req, res) {
@@ -8,8 +9,10 @@ module.exports = {
   },
 
   async create(req, res) {
-    const sql = `INSERT INTO task (title, description, responsible_email, responsible_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
-    const result = await dbConnection.query(sql, [req.body.title, req.body.description, req.body.responsible_email, req.body.responsible_name]);
+    const result = await Task.create(req.body);
     res.json(result);
   }
 }
+
+// Criar uma task a partir do front, validando e-mail e da forma correta,
+// arrumando estrutura, validações, comentários
