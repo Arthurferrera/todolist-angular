@@ -1,54 +1,93 @@
-<header>Toto List</header>
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <img
+      src="https://cms.saipos.com/storage/uploads/2020/10/22/5f91b01b547f5Logo-Saipos.svg"
+      alt="Logo Saipos"
+      width="159"
+      height="55"
+      class="d-inline-block align-text-top"
+    />
+
+    <span class="navbar-text"> Saipos TodoList </span>
+  </div>
+</nav>
 
 <main>
   <div class="container">
-    <div class="row">
+    <div class="row mt-5">
       <div class="col-md-6">
-        <h1>Adicionar Tarefas</h1>
+        <h1>Add Tasks</h1>
 
-        <div class="row">
-          <div class="col-md-12">
-            <label for="title">Title</label>
-            <input
-              [(ngModel)]="todoForm.title"
-              id="title"
-              name="title"
-              type="text"
-            />
+        <div class="row mt-4">
+          <div class="col-md-8 mb-3">
+            <div class="form-floating">
+              <input
+                [(ngModel)]="todoForm.title"
+                id="title"
+                name="title"
+                type="text"
+                class="form-control"
+                placeholder="Type title here..."
+              />
+              <label for="title">Title*</label>
+            </div>
           </div>
-          <div class="col-md-12">
-            <label for="description">Description</label>
-            <textarea
-              [(ngModel)]="todoForm.description"
-              cols="8"
-              rows="5"
-              id="description"
-              name="description"
-              type="text"
-            ></textarea>
+          <div class="col-md-12 mb-3">
+            <div class="form-floating">
+              <textarea
+                [(ngModel)]="todoForm.description"
+                rows="4"
+                id="description"
+                name="description"
+                type="text"
+                class="form-control"
+                placeholder="Type description here..."
+              ></textarea>
+              <label for="description">Description*</label>
+            </div>
           </div>
 
-          <div class="col-md-12">
-            <label for="responsible_name">Responsável</label>
-            <input
-              [(ngModel)]="todoForm.responsible_name"
-              id="responsible_name"
-              name="responsible_name"
-              type="text"
-            />
+          <div class="col-md-6 mb-3">
+            <div class="form-floating">
+              <input
+                [(ngModel)]="todoForm.responsible_name"
+                id="responsible_name"
+                name="responsible_name"
+                type="text"
+                class="form-control"
+                placeholder="Type responsible name here..."
+              />
+              <label for="responsible_name">Responsible*</label>
+            </div>
           </div>
-          <div class="col-md-12">
-            <label for="responsible_email">E-mail do Responsável</label>
-            <input
-              [(ngModel)]="todoForm.responsible_email"
-              id="responsible_email"
-              name="responsible_email"
-              type="email"
-            />
+          <div class="col-md-6 mb-3">
+            <div class="form-floating">
+              <input
+                [(ngModel)]="todoForm.responsible_email"
+                id="responsible_email"
+                name="responsible_email"
+                type="email"
+                class="form-control"
+                placeholder="Type responsible email here..."
+              />
+              <label for="responsible_email">Responsible E-mail*</label>
+            </div>
+          </div>
+
+          <div class="col-md-6 message-info-required">
+            <p>Obs: Fields with * are required.</p>
           </div>
         </div>
 
-        <button (click)="taskAdd()">Salvar</button>
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button
+            class="btn btn-primary btn-save"
+            type="button"
+            (click)="taskAdd()"
+          >
+            Save
+          </button>
+        </div>
       </div>
       <div class="col-md-6">
         <input
