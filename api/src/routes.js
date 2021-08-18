@@ -8,5 +8,6 @@ const routes = express.Router();
 // routes
 routes.get('/tasks', taskController.index);
 routes.post('/tasks', taskController.create);
+routes.delete('/tasks', taskController.delete);
 
 module.exports = routes;

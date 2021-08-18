@@ -1,34 +1,25 @@
-const Sequelize = require('sequelize');
-const database = require('../config/db');
+const { Model, DataTypes } = require('sequelize');
 
-const Task = database.define('task', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
-  },
-  title: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  description: Sequelize.STRING,
-  responsible_email: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  responsible_name: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  done: {
-    type: Sequelize.BOOLEAN,
-    allowNull: true
-  },
-  changed_pending: {
-    type: Sequelize.INTEGER,
-    allowNull: true
+class Task extends Model {
+  static init(sequelize) {
+    super.init({
+      title: DataTypes.STRING,
+      description: DataTypes.STRING,
+      responsible_name: DataTypes.STRING,
+      responsible_email: DataTypes.STRING,
+      done: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      },
+      changed_pending: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+    }, {
+      sequelize,
+      modelName: 'task',
+    })
   }
-})
+}
 
 module.exports = Task;

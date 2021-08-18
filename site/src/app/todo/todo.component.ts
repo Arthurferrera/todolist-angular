@@ -30,61 +30,52 @@ export class TodoComponent implements OnInit {
       this.http
         .post('tasks', this.todoForm)
         .toPromise()
-        .then((result) => {
-          console.log(result);
+        .then((result: TodoModel) => {
+          this.loadFromLocalStorage();
 
-          this.todoList.push(
-            new TodoModel(
-              this.todoForm.title,
-              this.todoForm.description,
-              this.todoForm.responsible_email,
-              this.todoForm.responsible_name
-            )
-          );
+          // empty form
+          this.todoForm = {
+            title: '',
+            description: '',
+            responsible_email: '',
+            responsible_name: '',
+          };
         })
-        .catch((error) => {});
-      this.todoForm = {
-        title: '',
-        description: '',
-        responsible_email: '',
-        responsible_name: '',
-      };
-      this.saveOnLocalStorage();
+        .catch((error) => {
+          console.error(`Post error: ${error}`);
+        });
     }
   }
 
   taskRemove(todo: TodoModel) {
-    const index = this.todoList.indexOf(todo);
-    if (index !== -1) {
-      this.todoList.splice(index, 1);
-    }
-    this.saveOnLocalStorage();
+    this.http
+      .delete('tasks', { task_id: todo.id })
+      .toPromise()
+      .then((result) => {
+        this.loadFromLocalStorage();
+      })
+      .catch((error) => {
+        console.error(`Delete error: ${error}`);
+      });
   }
+
   taskDone(todo: TodoModel) {
     const index = this.todoList.indexOf(todo);
     if (index !== -1) {
       todo.done = true;
     }
-    this.saveOnLocalStorage();
+    this.loadFromLocalStorage();
   }
 
-  saveOnLocalStorage() {
-    const data = JSON.stringify(this.todoList);
-    localStorage.setItem('todos', data);
-  }
   loadFromLocalStorage() {
-    const data = localStorage.getItem('todos');
-    this.todoList = JSON.parse(data) || [];
-
-    // req
     this.http
       .get('tasks', {})
       .toPromise()
-      .then((result) => {
-        console.log(result);
+      .then((result: TodoModel[]) => {
+        this.todoList = result || [];
       })
       .catch((error) => {
-        console.log(error);
+        console.error(`Get error: ${error}`);
       });
   }
 }

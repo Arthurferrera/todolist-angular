@@ -1,7 +1,8 @@
 const express = require('express');
-const cors = require('cors');
-const { errors } = require('celebrate');
 const routes = require('./routes');
+const cors = require('cors');
+
+const { errors } = require('celebrate');
 
 // create app
 const app = express();
