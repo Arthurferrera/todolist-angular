@@ -10,11 +10,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./todo.component.scss'],
 })
 export class TodoComponent implements OnInit {
-  todoList: TodoModel[] = [];
+  public todoDoneList: TodoModel[] = [];
+  public todoPendingList: TodoModel[] = [];
   public todoForm: TodoModel;
   public todoSelected: TodoModel;
   public search: String;
   public passConfirm: String;
+  public updateStatus: String;
   public passConfirmVisible: Boolean = false;
 
   constructor(
@@ -38,10 +40,11 @@ export class TodoComponent implements OnInit {
       .get('tasks', { keyword: this.search })
       .toPromise()
       .then((result: TodoModel[]) => {
-        this.todoList = result || [];
+        this.todoDoneList = result.filter((todo) => todo.done);
+        this.todoPendingList = result.filter((todo) => !todo.done);
       })
       .catch((error) => {
-        console.error(`Get error: ${error}`);
+        this.toast.error('Ops... Occurred error when try search the tasks');
       });
   }
 
@@ -66,12 +69,16 @@ export class TodoComponent implements OnInit {
           };
         })
         .catch((error) => {
-          console.error(`Post error: ${error}`);
+          this.toast.error('Ops... Occurred error when try create a new task');
         });
     }
   }
 
-  viewInputConfirm(condition: boolean, todo?: TodoModel) {
+  viewInputConfirm(
+    condition: boolean,
+    todo?: TodoModel,
+    type: string = 'done'
+  ) {
     this.passConfirmVisible = condition;
     if (!condition) {
       this.passConfirm = '';
@@ -79,6 +86,7 @@ export class TodoComponent implements OnInit {
     }
 
     if (condition) this.todoSelected = todo;
+    this.updateStatus = type;
   }
 
   taskRemove(todo: TodoModel) {
@@ -90,8 +98,14 @@ export class TodoComponent implements OnInit {
           this.viewInputConfirm(false);
           this.loadFromLocalStorage();
         })
-        .catch((error) => {
-          console.error(`Delete error: ${error}`);
+        .catch((resultError) => {
+          if (resultError.error.type === 'not_found') {
+            this.toast.error(resultError.error.error);
+          } else {
+            this.toast.error(
+              'Ops... Occurred error when try update status the task'
+            );
+          }
         });
     } else {
       this.toast.error('Ops... Invalid Password!');
@@ -99,11 +113,35 @@ export class TodoComponent implements OnInit {
   }
 
   taskDone(todo: TodoModel) {
-    const index = this.todoList.indexOf(todo);
-    if (index !== -1) {
-      todo.done = true;
+    if (this.updateStatus === 'pending') {
+      const validPass = this.utils.validatePasswordDelete(this.passConfirm);
+      if (!validPass) {
+        this.toast.error('Ops... Invalid Password!');
+        return;
+      }
     }
-    this.loadFromLocalStorage();
+
+    this.http
+      .put('tasks', { task_id: todo.id, done: !todo.done })
+      .toPromise()
+      .then((result: any) => {
+        this.loadFromLocalStorage();
+      })
+      .catch((resultError) => {
+        if (
+          resultError.error.type === 'not_found' ||
+          resultError.error.type === 'exceded_limit_change_for_pending'
+        ) {
+          this.toast.error(resultError.error.error);
+        } else {
+          this.toast.error(
+            'Ops... Occurred error when try update status the task'
+          );
+        }
+      })
+      .finally(() => {
+        this.viewInputConfirm(false);
+      });
   }
 
   loadFromLocalStorage() {
@@ -111,10 +149,12 @@ export class TodoComponent implements OnInit {
       .get('tasks', {})
       .toPromise()
       .then((result: TodoModel[]) => {
-        this.todoList = result || [];
+        this.todoDoneList = result.filter((todo) => todo.done);
+        this.todoPendingList = result.filter((todo) => !todo.done);
+        // this.todoList = result || [];
       })
       .catch((error) => {
-        console.error(`Get error: ${error}`);
+        this.toast.error('Ops... Occurred error when try get the tasks');
       });
   }
 }

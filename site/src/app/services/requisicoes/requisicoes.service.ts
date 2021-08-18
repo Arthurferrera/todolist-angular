@@ -33,14 +33,13 @@ export class RequisicoesService {
   public put(metodo_api: string, dados: any) {
     const headers = new HttpHeaders({
       'Access-Control-Allow-Origin': '*',
-      'access-control-request-method': 'PUT',
       'Access-Control-Allow-Methods': 'POST, GET,PUT, OPTIONS',
-      'access-control-request-headers': '',
     }).set('Content-Type', 'application/json');
 
     return this._http.put(
       this.ambiente + '/' + metodo_api,
-      JSON.stringify(dados)
+      JSON.stringify(dados),
+      { headers }
     );
   }
 

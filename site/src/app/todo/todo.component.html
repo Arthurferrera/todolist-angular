@@ -61,10 +61,25 @@
         />
         <div class="todo-container">
           <ol class="todo-list">
-            <li class="todo-item" *ngFor="let todo of todoList">
+            <h3>Pending</h3>
+            <li class="todo-item" *ngFor="let todo of todoPendingList">
+              <div class="todo-item-content" *ngIf="!todo.done">
+                {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
+                <button (click)="taskDone(todo)">Done</button> |
+                <button (click)="viewInputConfirm(true, todo)">Delete</button>
+              </div>
+            </li>
+
+            <h3>Done</h3>
+            <li class="todo-item" *ngFor="let todo of todoDoneList">
+              <!-- <div class="todo-item-content"> -->
               {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
-              <button (click)="taskDone(todo)">Done</button> |
+              <button (click)="viewInputConfirm(true, todo, 'pending')">
+                Pending
+              </button>
+              |
               <button (click)="viewInputConfirm(true, todo)">Delete</button>
+              <!-- </div> -->
             </li>
           </ol>
 
@@ -80,7 +95,18 @@
               />
             </div>
             <div class="col-md-2 col-md-offset-4">
-              <button (click)="taskRemove(todoSelected)">Confirm</button>
+              <button
+                *ngIf="updateStatus === 'done'"
+                (click)="taskRemove(todoSelected)"
+              >
+                Confirm
+              </button>
+              <button
+                *ngIf="updateStatus === 'pending'"
+                (click)="taskDone(todoSelected)"
+              >
+                Confirm
+              </button>
             </div>
             <div class="col-md-2">
               <button (click)="viewInputConfirm(false)">Cancel</button>
