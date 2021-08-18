@@ -51,12 +51,21 @@
         <button (click)="taskAdd()">Salvar</button>
       </div>
       <div class="col-md-6">
+        <input
+          [(ngModel)]="search"
+          id="search"
+          name="search"
+          type="search"
+          debounce="1000"
+          placeholder="Search tasks by title or description"
+          (keyup)="searchBy()"
+        />
         <div class="todo-container">
           <ol class="todo-list">
             <li class="todo-item" *ngFor="let todo of todoList">
               {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
-              <button (click)="taskDone(todo)">concluir</button> |
-              <button (click)="taskRemove(todo)">remover</button>
+              <button (click)="taskDone(todo)">Done</button> |
+              <button (click)="taskRemove(todo)">Delete</button>
             </li>
           </ol>
         </div>

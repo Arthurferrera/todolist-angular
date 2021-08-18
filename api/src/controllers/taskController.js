@@ -1,8 +1,22 @@
 const Task = require('../model/taskModel');
+const { Op } = require('sequelize');
 
 module.exports = {
   async index(req, res) {
-    const tasks = await Task.findAll();
+    const { keyword } = req.query;
+    let whereQuery = {};
+
+    if (keyword) {
+      whereQuery = {
+        where: {
+          [Op.or]: [
+            { title: { [Op.like]: `%${keyword}%` } },
+            { description: { [Op.like]: `%${keyword}%` } }
+          ]
+        }
+      }
+    }
+    const tasks = await Task.findAll(whereQuery);
     return res.status(200).json(tasks);
   },
 
