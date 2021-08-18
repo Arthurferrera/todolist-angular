@@ -56,7 +56,6 @@
           id="search"
           name="search"
           type="search"
-          debounce="1000"
           placeholder="Search tasks by title or description"
           (keyup)="searchBy()"
         />
@@ -65,9 +64,28 @@
             <li class="todo-item" *ngFor="let todo of todoList">
               {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
               <button (click)="taskDone(todo)">Done</button> |
-              <button (click)="taskRemove(todo)">Delete</button>
+              <button (click)="viewInputConfirm(true, todo)">Delete</button>
             </li>
           </ol>
+
+          <div *ngIf="passConfirmVisible" class="row p-0">
+            <div class="col-md-6 col-md-offset-3">
+              <input
+                style="width: 100%"
+                [(ngModel)]="passConfirm"
+                id="passConfirm"
+                name="passConfirm"
+                type="text"
+                placeholder="Password for confirm delete "
+              />
+            </div>
+            <div class="col-md-2 col-md-offset-4">
+              <button (click)="taskRemove(todoSelected)">Confirm</button>
+            </div>
+            <div class="col-md-2">
+              <button (click)="viewInputConfirm(false)">Cancel</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

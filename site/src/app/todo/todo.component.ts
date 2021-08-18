@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { KEY_MAILBOX } from 'src/environments/environment';
 import { TodoModel } from '../model/todo.model';
 import { RequisicoesService } from '../services/requisicoes/requisicoes.service';
+import { UtilService } from '../services/utils/util.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-todo',
@@ -12,11 +12,15 @@ import { RequisicoesService } from '../services/requisicoes/requisicoes.service'
 export class TodoComponent implements OnInit {
   todoList: TodoModel[] = [];
   public todoForm: TodoModel;
+  public todoSelected: TodoModel;
   public search: String;
+  public passConfirm: String;
+  public passConfirmVisible: Boolean = false;
 
   constructor(
     private http: RequisicoesService,
-    private httpClient: HttpClient
+    private utils: UtilService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -41,29 +45,8 @@ export class TodoComponent implements OnInit {
       });
   }
 
-  async validateEmail(email: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      this.httpClient
-        .get(
-          `http://apilayer.net/api/check?access_key=${KEY_MAILBOX}&email=${email}`
-        )
-        .toPromise()
-        .then((result: any) => {
-          if (result.code === 104 && result.type === 'usage_limit_reached') {
-            // TODO: IMPLEMENT TOAST ANGULAR
-            // toastr.error('You have reached the limit of requests per month.');
-          }
-          resolve(true);
-        })
-        .catch((error) => {
-          reject(false);
-          console.error(`Get validateEmail error: ${error}`);
-        });
-    });
-  }
-
   async taskAdd() {
-    const validEmail = await this.validateEmail(
+    const validEmail = await this.utils.validateEmail(
       this.todoForm.responsible_email
     );
 
@@ -88,16 +71,31 @@ export class TodoComponent implements OnInit {
     }
   }
 
+  viewInputConfirm(condition: boolean, todo?: TodoModel) {
+    this.passConfirmVisible = condition;
+    if (!condition) {
+      this.passConfirm = '';
+      this.todoSelected = todo;
+    }
+
+    if (condition) this.todoSelected = todo;
+  }
+
   taskRemove(todo: TodoModel) {
-    this.http
-      .delete('tasks', { task_id: todo.id })
-      .toPromise()
-      .then((result) => {
-        this.loadFromLocalStorage();
-      })
-      .catch((error) => {
-        console.error(`Delete error: ${error}`);
-      });
+    if (this.utils.validatePasswordDelete(this.passConfirm)) {
+      this.http
+        .delete('tasks', { task_id: todo.id })
+        .toPromise()
+        .then((result) => {
+          this.viewInputConfirm(false);
+          this.loadFromLocalStorage();
+        })
+        .catch((error) => {
+          console.error(`Delete error: ${error}`);
+        });
+    } else {
+      this.toast.error('Ops... Invalid Password!');
+    }
   }
 
   taskDone(todo: TodoModel) {
