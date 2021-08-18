@@ -62,6 +62,7 @@
         <div class="todo-container">
           <ol class="todo-list">
             <h3>Pending</h3>
+            <button (click)="insertTasks()">I'm out of tasks!</button>
             <li class="todo-item" *ngFor="let todo of todoPendingList">
               <div class="todo-item-content" *ngIf="!todo.done">
                 {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
@@ -72,14 +73,12 @@
 
             <h3>Done</h3>
             <li class="todo-item" *ngFor="let todo of todoDoneList">
-              <!-- <div class="todo-item-content"> -->
               {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
               <button (click)="viewInputConfirm(true, todo, 'pending')">
                 Pending
               </button>
               |
               <button (click)="viewInputConfirm(true, todo)">Delete</button>
-              <!-- </div> -->
             </li>
           </ol>
 

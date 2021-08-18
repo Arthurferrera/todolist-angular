@@ -157,4 +157,39 @@ export class TodoComponent implements OnInit {
         this.toast.error('Ops... Occurred error when try get the tasks');
       });
   }
+
+  insertTasks() {
+    this.utils
+      .getFactsDog()
+      .then((facts) => {
+        facts.forEach((fact) => {
+          let newTask = new TodoModel(
+            'Fact Dog',
+            fact.text,
+            'eu@me.com',
+            'eu',
+            false,
+            0
+          );
+
+          this.http
+            .post('tasks', newTask)
+            .toPromise()
+            .then((result: TodoModel) => {
+              console.log('Task added');
+            })
+            .catch((error) => {
+              this.toast.error(
+                'Ops... Occurred error when try create a new task'
+              );
+            });
+        });
+      })
+      .catch((error) => {
+        this.toast.error('Ops... Occurred error when try get the facts');
+      })
+      .finally(() => {
+        this.loadFromLocalStorage();
+      });
+  }
 }
