@@ -15,11 +15,12 @@
 <main>
   <div class="container">
     <div class="row mt-5">
-      <div class="col-md-6">
-        <h1>Add Tasks</h1>
+      <!-- content form -->
+      <div class="col-md-6 mb-5">
+        <h2>Add Tasks</h2>
 
         <div class="row mt-4">
-          <div class="col-md-8 mb-3">
+          <div class="col-md-8 col-sm-8 mb-3">
             <div class="form-floating">
               <input
                 [(ngModel)]="todoForm.title"
@@ -47,7 +48,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 col-sm-6 mb-3">
             <div class="form-floating">
               <input
                 [(ngModel)]="todoForm.responsible_name"
@@ -60,7 +61,7 @@
               <label for="responsible_name">Responsible*</label>
             </div>
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 col-sm-6 mb-3">
             <div class="form-floating">
               <input
                 [(ngModel)]="todoForm.responsible_email"
@@ -74,7 +75,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 message-info-required">
+          <div class="col-md-6 col-sm-6 message-info-required">
             <p>Obs: Fields with * are required.</p>
           </div>
         </div>
@@ -89,38 +90,119 @@
           </button>
         </div>
       </div>
+      <!-- content list -->
       <div class="col-md-6">
-        <input
-          [(ngModel)]="search"
-          id="search"
-          name="search"
-          type="search"
-          placeholder="Search tasks by title or description"
-          (keyup)="searchBy()"
-        />
-        <div class="todo-container">
-          <ol class="todo-list">
-            <h3>Pending</h3>
-            <button (click)="insertTasks()">I'm out of tasks!</button>
-            <li class="todo-item" *ngFor="let todo of todoPendingList">
-              <div class="todo-item-content" *ngIf="!todo.done">
-                {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
-                <button (click)="taskDone(todo)">Done</button> |
-                <button (click)="viewInputConfirm(true, todo)">Delete</button>
-              </div>
-            </li>
+        <div class="row mt-4">
+          <div class="col-md-8 col-sm-8 offset-2 mb-4">
+            <input
+              [(ngModel)]="search"
+              id="search"
+              name="search"
+              type="search"
+              class="form-control"
+              placeholder="Search tasks by title or description"
+              (keyup)="searchBy()"
+            />
+          </div>
+        </div>
 
-            <h3>Done</h3>
-            <li class="todo-item" *ngFor="let todo of todoDoneList">
-              {{ todo.title }} -- {{ todo.description }} - {{ todo.done }}
-              <button (click)="viewInputConfirm(true, todo, 'pending')">
-                Pending
+        <div class="list-group">
+          <div class="row mb-4">
+            <div
+              class="
+                d-flex
+                justify-content-start
+                align-items-center
+                col-md-8 col-sm-8
+              "
+            >
+              <h4 class="m-0">Pending</h4>
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <button
+                type="button"
+                class="btn btn-get-facts"
+                (click)="insertTasks()"
+              >
+                I'm out of tasks!
               </button>
-              |
-              <button (click)="viewInputConfirm(true, todo)">Delete</button>
-            </li>
-          </ol>
+            </div>
+          </div>
 
+          <div
+            class="list-group-item list-group-item-action todo-item"
+            *ngFor="let todo of todoPendingList"
+          >
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1">{{ todo.title }}</h6>
+            </div>
+            <small>{{ todo.description }}</small>
+
+            <div class="row">
+              <div class="col-md-2 col-sm-2 offset-8">
+                <button
+                  type="button"
+                  class="btn btn-done"
+                  (click)="taskDone(todo)"
+                >
+                  Done
+                </button>
+              </div>
+              <div class="col-md-2 col-sm-2">
+                <button
+                  class="btn btn-delete"
+                  (click)="viewInputConfirm(true, todo)"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4 mt-4">
+          <div
+            class="
+              d-flex
+              justify-content-start
+              align-items-center
+              col-md-8 col-sm-8
+            "
+          >
+            <h4 class="m-0">Done</h4>
+          </div>
+        </div>
+
+        <div
+          class="list-group-item list-group-item-action todo-item"
+          *ngFor="let todo of todoDoneList"
+        >
+          <div class="d-flex w-100 justify-content-between">
+            <h6 class="mb-1">{{ todo.title }}</h6>
+          </div>
+          <small>{{ todo.description }}</small>
+
+          <div class="row">
+            <div class="col-md-2 col-sm-2 offset-8">
+              <button
+                type="button"
+                class="btn btn-done"
+                (click)="taskDone(todo)"
+              >
+                Done
+              </button>
+            </div>
+            <div class="col-md-2 col-sm-2">
+              <button
+                class="btn btn-delete"
+                (click)="viewInputConfirm(true, todo)"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--
           <div *ngIf="passConfirmVisible" class="row p-0">
             <div class="col-md-6 col-md-offset-3">
               <input
@@ -150,7 +232,7 @@
               <button (click)="viewInputConfirm(false)">Cancel</button>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
