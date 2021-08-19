@@ -128,7 +128,7 @@
               [(ngModel)]="search"
               id="search"
               name="search"
-              type="search"
+              type="text"
               class="form-control"
               placeholder="Search tasks by title or description"
               (keyup)="searchBy()"
@@ -171,7 +171,7 @@
                   <div class="col-md-2 col-sm-2 offset-8">
                     <button
                       type="button"
-                      class="btn btn-done"
+                      class="btn btn-done mt-2"
                       (click)="taskDone(todo)"
                     >
                       Done
@@ -179,7 +179,7 @@
                   </div>
                   <div class="col-md-2 col-sm-2">
                     <button
-                      class="btn btn-delete"
+                      class="btn btn-delete mt-2"
                       (click)="viewInputConfirm(true, todo)"
                     >
                       Delete
@@ -257,7 +257,7 @@
                   <div class="col-md-2 col-sm-2 offset-8">
                     <button
                       type="button"
-                      class="btn btn-done btn-pending"
+                      class="btn btn-done btn-pending mt-2"
                       (click)="viewInputConfirm(true, todo, 'pending')"
                     >
                       Pending
@@ -265,7 +265,7 @@
                   </div>
                   <div class="col-md-2 col-sm-2">
                     <button
-                      class="btn btn-delete"
+                      class="btn btn-delete mt-2"
                       (click)="viewInputConfirm(true, todo)"
                     >
                       Delete
