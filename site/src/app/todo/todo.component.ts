@@ -17,6 +17,7 @@ export class TodoComponent implements OnInit {
   public search: String;
   public passConfirm: String;
   public updateStatus: String;
+  public tab = 'pending';
   public passConfirmVisible: Boolean = false;
 
   constructor(
@@ -34,7 +35,9 @@ export class TodoComponent implements OnInit {
     };
     this.loadFromLocalStorage();
   }
-
+  changeTab(tab: string) {
+    this.tab = tab;
+  }
   async searchBy() {
     await this.http
       .get('tasks', { keyword: this.search })

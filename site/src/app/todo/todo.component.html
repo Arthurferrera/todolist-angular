@@ -20,7 +20,7 @@
         <h2>Add Tasks</h2>
 
         <div class="row mt-4">
-          <div class="col-md-8 col-sm-8 mb-3">
+          <div class="col-md-12 col-sm-12 mb-3">
             <div class="form-floating">
               <input
                 [(ngModel)]="todoForm.title"
@@ -80,7 +80,7 @@
           </div>
         </div>
 
-        <div class="d-grid gap-2 col-6 mx-auto">
+        <div class="d-grid gap-2 col-md-6 col-sm-6 offset-6">
           <button
             class="btn btn-primary btn-save"
             type="button"
@@ -116,7 +116,27 @@
                 col-md-8 col-sm-8
               "
             >
-              <h4 class="m-0">Pending</h4>
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [ngClass]="{ active: tab === 'pending' }"
+                    (click)="changeTab('pending')"
+                    aria-current="page"
+                    href="#"
+                    >Pending</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [ngClass]="{ active: tab === 'done' }"
+                    (click)="changeTab('done')"
+                    href="#"
+                    >Done</a
+                  >
+                </li>
+              </ul>
             </div>
             <div class="col-md-4 col-sm-4">
               <button
@@ -129,38 +149,180 @@
             </div>
           </div>
 
-          <div
-            class="list-group-item list-group-item-action todo-item"
-            *ngFor="let todo of todoPendingList"
-          >
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1">{{ todo.title }}</h6>
-            </div>
-            <small>{{ todo.description }}</small>
+          <!-- list pending -->
+          <ng-container *ngIf="tab === 'pending'">
+            <div class="row mb-5 content-items">
+              <div
+                class="list-group-item list-group-item-action todo-item"
+                *ngFor="let todo of todoPendingList"
+              >
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">{{ todo.title }}</h6>
+                </div>
+                <small>{{ todo.description }}</small>
 
-            <div class="row">
-              <div class="col-md-2 col-sm-2 offset-8">
-                <button
-                  type="button"
-                  class="btn btn-done"
-                  (click)="taskDone(todo)"
+                <div
+                  class="row"
+                  *ngIf="
+                    (todoSelected && todoSelected.id !== todo.id) ||
+                    !passConfirmVisible
+                  "
                 >
-                  Done
-                </button>
-              </div>
-              <div class="col-md-2 col-sm-2">
-                <button
-                  class="btn btn-delete"
-                  (click)="viewInputConfirm(true, todo)"
+                  <div class="col-md-2 col-sm-2 offset-8">
+                    <button
+                      type="button"
+                      class="btn btn-done"
+                      (click)="taskDone(todo)"
+                    >
+                      Done
+                    </button>
+                  </div>
+                  <div class="col-md-2 col-sm-2">
+                    <button
+                      class="btn btn-delete"
+                      (click)="viewInputConfirm(true, todo)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="passConfirmVisible && todoSelected.id === todo.id"
+                  class="row p-0 mt-2"
                 >
-                  Delete
-                </button>
+                  <div class="col-md-6 col-sm-6 offset-2">
+                    <input
+                      style="width: 100%"
+                      [(ngModel)]="passConfirm"
+                      id="passConfirm"
+                      name="passConfirm"
+                      class="form-control"
+                      type="text"
+                      placeholder="Password for confirm delete "
+                    />
+                  </div>
+                  <div class="col-md-2 col-sm-2">
+                    <button
+                      *ngIf="updateStatus === 'done'"
+                      type="button"
+                      class="btn btn-done"
+                      (click)="taskRemove(todo)"
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      *ngIf="updateStatus === 'pending'"
+                      type="button"
+                      class="btn btn-done"
+                      (click)="taskDone(todo)"
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                  <div class="col-md-2 col-sm-2">
+                    <button
+                      type="button"
+                      class="btn btn-delete"
+                      type="button"
+                      (click)="viewInputConfirm(false)"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </ng-container>
+
+          <!-- list done -->
+          <ng-container *ngIf="tab === 'done'">
+            <div class="row mb-5 content-items">
+              <div
+                class="list-group-item list-group-item-action todo-item"
+                *ngFor="let todo of todoDoneList"
+              >
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">{{ todo.title }}</h6>
+                </div>
+                <small>{{ todo.description }}</small>
+
+                <div
+                  class="row"
+                  *ngIf="
+                    (todoSelected && todoSelected.id !== todo.id) ||
+                    !passConfirmVisible
+                  "
+                >
+                  <div class="col-md-2 col-sm-2 offset-8">
+                    <button
+                      type="button"
+                      class="btn btn-done"
+                      (click)="taskDone(todo)"
+                    >
+                      Done
+                    </button>
+                  </div>
+                  <div class="col-md-2 col-sm-2">
+                    <button
+                      class="btn btn-delete"
+                      (click)="viewInputConfirm(true, todo)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="passConfirmVisible && todoSelected.id === todo.id"
+                  class="row p-0 mt-2"
+                >
+                  <div class="col-md-6 col-sm-6 offset-2">
+                    <input
+                      style="width: 100%"
+                      [(ngModel)]="passConfirm"
+                      id="passConfirm"
+                      name="passConfirm"
+                      class="form-control"
+                      type="text"
+                      placeholder="Password for confirm delete "
+                    />
+                  </div>
+                  <div class="col-md-2 col-sm-2">
+                    <button
+                      *ngIf="updateStatus === 'done'"
+                      type="button"
+                      class="btn btn-done"
+                      (click)="taskRemove(todo)"
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      *ngIf="updateStatus === 'pending'"
+                      type="button"
+                      class="btn btn-done"
+                      (click)="taskDone(todo)"
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                  <div class="col-md-2 col-sm-2">
+                    <button
+                      type="button"
+                      class="btn btn-delete"
+                      type="button"
+                      (click)="viewInputConfirm(false)"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
         </div>
 
-        <div class="row mb-4 mt-4">
+        <!-- <div class="row mb-4 mt-4">
           <div
             class="
               d-flex
@@ -170,67 +332,6 @@
             "
           >
             <h4 class="m-0">Done</h4>
-          </div>
-        </div>
-
-        <div
-          class="list-group-item list-group-item-action todo-item"
-          *ngFor="let todo of todoDoneList"
-        >
-          <div class="d-flex w-100 justify-content-between">
-            <h6 class="mb-1">{{ todo.title }}</h6>
-          </div>
-          <small>{{ todo.description }}</small>
-
-          <div class="row">
-            <div class="col-md-2 col-sm-2 offset-8">
-              <button
-                type="button"
-                class="btn btn-done"
-                (click)="taskDone(todo)"
-              >
-                Done
-              </button>
-            </div>
-            <div class="col-md-2 col-sm-2">
-              <button
-                class="btn btn-delete"
-                (click)="viewInputConfirm(true, todo)"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-        <!--
-          <div *ngIf="passConfirmVisible" class="row p-0">
-            <div class="col-md-6 col-md-offset-3">
-              <input
-                style="width: 100%"
-                [(ngModel)]="passConfirm"
-                id="passConfirm"
-                name="passConfirm"
-                type="text"
-                placeholder="Password for confirm delete "
-              />
-            </div>
-            <div class="col-md-2 col-md-offset-4">
-              <button
-                *ngIf="updateStatus === 'done'"
-                (click)="taskRemove(todoSelected)"
-              >
-                Confirm
-              </button>
-              <button
-                *ngIf="updateStatus === 'pending'"
-                (click)="taskDone(todoSelected)"
-              >
-                Confirm
-              </button>
-            </div>
-            <div class="col-md-2">
-              <button (click)="viewInputConfirm(false)">Cancel</button>
-            </div>
           </div>
         </div> -->
       </div>

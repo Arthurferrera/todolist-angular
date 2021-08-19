@@ -30,13 +30,27 @@ textarea {
   border-color: #8cea86;
 }
 
+.content-items {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 .btn-done {
   background-color: #8cea86;
   border-color: #8cea86;
 }
 
 .btn-delete {
-  background-color: #f0a0a7;
-  border-color: #f0a0a7;
+  background-color: #ff6370;
+  border-color: #ff6370;
   color: #fff;
+}
+
+.nav-link {
+  color: #008fce;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: #008fce !important;
 }
