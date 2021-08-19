@@ -51,7 +51,7 @@ Abaixo está um exemplo da home da aplicação
 2. Para executar a Aplicação execute os seguintes comandos:
 
 ```sh
-  # Primeiro acesse pegue o arquivo dump em dump/, crie um banco de dados na sua conexão localhost e importe esse dump
+  # Primeiro pegue o arquivo dump em dump/, crie um banco de dados na sua conexão localhost e importe esse dump
   
   # Acesse a pasta da api do projeto
   $ cd api
