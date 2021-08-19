@@ -16,7 +16,7 @@ module.exports = {
         }
       }
     }
-    const tasks = await Task.findAll(whereQuery);
+    const tasks = await Task.findAll({ whereQuery, order: [['updated_at', 'DESC']] });
     return res.status(200).json(tasks);
   },
 
