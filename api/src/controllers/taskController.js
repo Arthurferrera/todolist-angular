@@ -4,19 +4,20 @@ const { Op } = require('sequelize');
 module.exports = {
   async index(req, res) {
     const { keyword } = req.query;
-    let whereQuery = {};
+    let options = {
+      where: {},
+      order: [['updated_at', 'DESC']]
+    };
 
     if (keyword) {
-      whereQuery = {
-        where: {
-          [Op.or]: [
-            { title: { [Op.like]: `%${keyword}%` } },
-            { description: { [Op.like]: `%${keyword}%` } }
-          ]
-        }
+      options.where = {
+        [Op.or]: [
+          { title: { [Op.like]: `%${keyword}%` } },
+          { description: { [Op.like]: `%${keyword}%` } }
+        ]
       }
     }
-    const tasks = await Task.findAll({ whereQuery, order: [['updated_at', 'DESC']] });
+    const tasks = await Task.findAll(options);
     return res.status(200).json(tasks);
   },
 

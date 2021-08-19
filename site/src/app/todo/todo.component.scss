@@ -24,6 +24,10 @@ textarea {
   height: auto !important;
 }
 
+.row-btn-get-facts {
+  height: 48px;
+}
+
 .btn-get-facts {
   width: 100%;
   background-color: #8cea86;
@@ -38,6 +42,12 @@ textarea {
 .btn-done {
   background-color: #8cea86;
   border-color: #8cea86;
+}
+
+.btn-pending {
+  background-color: #ff637050;
+  border-color: #ff637050;
+  color: #ff6370;
 }
 
 .btn-delete {
